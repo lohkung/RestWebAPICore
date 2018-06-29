@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace RestWebAPICore.Models
 {
-    public class CreditCardItem
+    public class ValidateResult
     {
-        public int id { get; set; }
-        public String cardnumber { get; set; }
+        public String result { get; set; }
+        public String cardType { get; set; }
     }
 }

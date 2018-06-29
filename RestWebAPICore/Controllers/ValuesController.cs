@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RestWebAPICore.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class ValuesController : ControllerBase
     {
         // GET api/values

@@ -10,9 +10,17 @@ namespace RestWebAPICore.Models
     {
         public CreditCardContext(DbContextOptions<CreditCardContext> options) : base (options)
         {
+            
 
         }
-        public DbSet<CreditCardItem> creditCardItems { get; set; }
+        public DbSet<CreditCardItem> CreditCardItems { get; set; }
+
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CreditCardItem>().ToTable("creditcard");
+        }
+        
 
     }
 }
