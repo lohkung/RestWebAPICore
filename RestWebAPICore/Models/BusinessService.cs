@@ -52,6 +52,11 @@ namespace RestWebAPICore.Models
                     {
                         res.result = "Valid";
                     }
+                    else
+                    {
+                        res.result = "Invalid";
+                    }
+                    return res;
 
                 }
 
@@ -84,7 +89,7 @@ namespace RestWebAPICore.Models
                 }
                 else if (card.cardNumber.StartsWith("4") && cLength == REST_LENGTH)
                 {
-                    return "visa";
+                    return "Visa";
 
                 }
                 else if (card.cardNumber.StartsWith("5") && cLength == REST_LENGTH)
@@ -99,7 +104,7 @@ namespace RestWebAPICore.Models
         private int ExpiryYear(Card card)
         {
             String expDate = card.expireDate;
-            String exp = expDate.Substring(2, 5);
+            String exp = expDate.Substring(2, 4);
             int year = Convert.ToInt32(exp);
             return year;
         }

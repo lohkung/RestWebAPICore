@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RestWebAPICore.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,14 +23,14 @@ namespace RestWebAPICore.Controllers
 
             
         }
-
+        
         [HttpGet]
         public ActionResult<List<CreditCardItem>> GetAll()
         {
             return _context.CreditCardItems.ToList();
         }
 
-        [HttpGet("{id}", Name = "CheckCreditCard")]
+        [HttpGet("{id}")]
         public ActionResult<CreditCardItem> GetById(int id)
         {
             var item = _context.CreditCardItems.Find(id);
@@ -38,9 +40,9 @@ namespace RestWebAPICore.Controllers
             }
             return Ok(item);
         }
-
-        [HttpGet("cardNumber = {cardNumber}/expireDate={expireDate}")]
-        public ActionResult<ValidateResult> CheckCreditcard([FromQuery]String cardNumber, [FromQuery]String expireDate)
+        
+        [HttpGet("{cardNumber}/{expireDate}")]
+        public ActionResult<ValidateResult> CheckCreditcard([FromRoute]String cardNumber, [FromRoute]String expireDate)
         {
             if (!ModelState.IsValid)
             {
@@ -50,17 +52,28 @@ namespace RestWebAPICore.Controllers
             ValidateResult res = new ValidateResult();
             BusinessService bs = new BusinessService();
             Card c = new Card(cardNumber, expireDate);
-            //if (!isExist()) // check by proc
-            bool test = true;
-            if (!test)
+            var paramCardNumber = new SqlParameter("@CardNumber", cardNumber);
+            List<CreditCardItem> CreditCardItems = _context.CreditCardItems.FromSql("GetOfCreditCards @CardNumber", paramCardNumber).ToList();
+
+            int cnt = CreditCardItems.Count();
+            if (cnt == 0)
             {
                 res.result = "Does not exist";
                 return res;
             }
+
+            /*
+            foreach (var item in CreditCardItems)
+            {
+
+            }
+            */
             
+
+
             return bs.VerifyResult(c);
         }
 
-        
+
     }
 }

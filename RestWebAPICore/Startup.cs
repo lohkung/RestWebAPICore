@@ -21,6 +21,7 @@ namespace RestWebAPICore
 
             Configuration = builder.Build();
 
+         
             services.AddDbContext<CreditCardContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
